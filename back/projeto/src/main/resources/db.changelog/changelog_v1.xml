@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+
+    <changeSet id="1" author="majulucato">
+        <preConditions>
+            <not>
+                <tableExists tableName="person"/>
+            </not>
+        </preConditions>
+        <createTable tableName="person">
+            <column name="id" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" validateNullable="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" validateNullable="true"/>
+            </column>
+            <column name="cpf" type="varchar(11)">
+                <constraints nullable="false" validateNullable="true"/>
+            </column>
+            <column name="birth_date" type="date">
+                <constraints nullable="false" validateNullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="majulucato">
+        <preConditions>
+            <not>
+                <tableExists tableName="contact"/>
+            </not>
+        </preConditions>
+        <createTable tableName="contact">
+            <column name="id" type="serial" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" validateNullable="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false" validateNullable="true"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false" validateNullable="true"/>
+            </column>
+            <column name="phone" type="varchar(13)">
+                <constraints nullable="false" validateNullable="true"/>
+            </column>
+            <column name="person_id" type="bigint">
+                <constraints foreignKeyName="fk_person_id" referencedTableName="person"
+                             referencedColumnNames="id" nullable="false"
+                             deleteCascade="true" validateNullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
