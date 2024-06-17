@@ -110,8 +110,4 @@ public class PersonService {
     public void deleteInBatchByIds(List<Long> ids) {
         this.personRepository.deleteAllByIdInBatch(ids);
     }
-
-    public List<Person> get() {
-        return this.personRepository.findAll();
-    }
 }

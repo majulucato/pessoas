@@ -28,10 +28,9 @@ public class PersonAPI {
         return ResponseEntity.ok(this.personService.getById(id));
     }
 
-    @GetMapping("/{page}/{size}")
+    @GetMapping
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<Page<Person>> getAll(@PathVariable int page, @PathVariable int size){
-        Pageable pageable = PageRequest.of(page, size);
+    public ResponseEntity<Page<Person>> getAll(Pageable pageable) {
         return ResponseEntity.ok(this.personService.getAll(pageable));
     }
 
