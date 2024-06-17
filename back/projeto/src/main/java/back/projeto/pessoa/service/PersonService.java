@@ -4,11 +4,10 @@ import back.projeto.contato.model.Contact;
 import back.projeto.contato.service.ContactService;
 import back.projeto.pessoa.model.Person;
 import back.projeto.pessoa.model.dto.PersonRequestDTO;
-import back.projeto.pessoa.model.dto.PersonSearchDTO;
 import back.projeto.pessoa.repository.PersonRepository;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -28,9 +27,8 @@ public class PersonService {
         return this.personRepository.findById(id);
     }
 
-    public Page<Person> getAll(PersonSearchDTO searchDTO) {
-        PageRequest pageRequest = PageRequest.of(searchDTO.page(), searchDTO.pageSize());
-        return this.personRepository.findAll(pageRequest);
+    public Page<Person> getAll(Pageable pageable) {
+        return this.personRepository.findAll(pageable);
     }
 
     public Person saveOrUpdate(PersonRequestDTO requestDTO) {
@@ -111,5 +109,9 @@ public class PersonService {
 
     public void deleteInBatchByIds(List<Long> ids) {
         this.personRepository.deleteAllByIdInBatch(ids);
+    }
+
+    public List<Person> get() {
+        return this.personRepository.findAll();
     }
 }
