@@ -1,5 +1,7 @@
 package back.projeto.contato.model;
 
+import back.projeto.pessoa.model.Person;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -25,6 +27,8 @@ public class Contact {
     @Column(name = "phone")
     private String phone;
     @NotNull
-    @Column(name = "person_id")
-    private Long personId;
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "person_id")
+    private Person person;
 }

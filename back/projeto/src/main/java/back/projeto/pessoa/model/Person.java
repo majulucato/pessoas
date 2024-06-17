@@ -1,6 +1,7 @@
 package back.projeto.pessoa.model;
 
 import back.projeto.contato.model.Contact;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.validator.constraints.br.CPF;
@@ -27,7 +28,7 @@ public class Person {
     @Column(name = "birth_date")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
-    @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "person_id")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contact> contacts;
 }
