@@ -329,7 +329,7 @@ class PersonServiceTest {
             when(personRepository.findAll(any(Pageable.class))).thenReturn(page);
 
             Pageable pageable = PageRequest.of(0, 2);
-            Page<Person> result = personService.getAll(pageable);
+            Page<Person> result = personService.getAll(pageable, "");
 
             verify(personRepository, times(1)).findAll(pageable);
             assertEquals(2, result.getContent().size());

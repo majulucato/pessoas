@@ -1,6 +1,8 @@
 package back.projeto.pessoa.repository;
 
 import back.projeto.pessoa.model.Person;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,4 +15,11 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
                     "FROM person " +
                     "WHERE cpf = :cpf")
     boolean existsByCPF(@Param("cpf") String cpf);
+
+    @Query(nativeQuery = true,
+            value = "SELECT * " +
+                    "FROM person p " +
+                    "WHERE (name LIKE :param " +
+                    "       OR cpf LIKE :param)")
+    Page<Person> findAllWithSearchParam(Pageable pageable, @Param("param") String param);
 }

@@ -5,6 +5,7 @@ import back.projeto.contato.service.ContactService;
 import back.projeto.pessoa.model.Person;
 import back.projeto.pessoa.model.dto.PersonRequestDTO;
 import back.projeto.pessoa.repository.PersonRepository;
+import io.micrometer.common.util.StringUtils;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +28,10 @@ public class PersonService {
         return this.personRepository.findById(id);
     }
 
-    public Page<Person> getAll(Pageable pageable) {
+    public Page<Person> getAll(Pageable pageable, String param) {
+        if (!StringUtils.isBlank(param)) {
+            return this.personRepository.findAllWithSearchParam(pageable, param);
+        }
         return this.personRepository.findAll(pageable);
     }
 
@@ -105,9 +109,5 @@ public class PersonService {
 
     public void deleteById(Long id) {
         this.personRepository.deleteById(id);
-    }
-
-    public void deleteInBatchByIds(List<Long> ids) {
-        this.personRepository.deleteAllByIdInBatch(ids);
     }
 }

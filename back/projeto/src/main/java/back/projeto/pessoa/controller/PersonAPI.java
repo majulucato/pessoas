@@ -6,11 +6,11 @@ import back.projeto.pessoa.service.PersonService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -23,41 +23,37 @@ public class PersonAPI {
     }
 
     @GetMapping("/{id}")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @CrossOrigin()
     public ResponseEntity<Optional<Person>> getById(@PathVariable Long id){
         return ResponseEntity.ok(this.personService.getById(id));
     }
 
-    @GetMapping
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<Page<Person>> getAll(Pageable pageable) {
-        return ResponseEntity.ok(this.personService.getAll(pageable));
+    @GetMapping("/all")
+    @CrossOrigin()
+    public ResponseEntity<Page<Person>> getAll(@RequestParam int page,
+                                               @RequestParam int size,
+                                               @RequestParam String param){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "name"));
+        return ResponseEntity.ok(this.personService.getAll(pageable, param));
     }
 
     @PostMapping
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @CrossOrigin()
     public ResponseEntity<Person> save(@RequestBody PersonRequestDTO requestDTO){
         return ResponseEntity.ok(this.personService.saveOrUpdate(requestDTO));
     }
 
 
     @PutMapping
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @CrossOrigin()
     public ResponseEntity<Person> update(@RequestBody PersonRequestDTO requestDTO){
         return ResponseEntity.ok(this.personService.saveOrUpdate(requestDTO));
     }
 
     @DeleteMapping("/{id}")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @CrossOrigin()
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         this.personService.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @DeleteMapping("/delete-batch")
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<Void> deleteBatch(List<Long> ids){
-        this.personService.deleteInBatchByIds(ids);
         return ResponseEntity.noContent().build();
     }
 }
